@@ -1,11 +1,11 @@
 (function(){
 
   angular
-       .module('users')
-       .controller('UserController', [
-          'userService', '$mdSidenav', '$mdBottomSheet', '$log', '$q',
-          UserController
-       ]);
+    .module('users')
+    .controller('UserController', [
+      'userService', '$mdSidenav', '$mdBottomSheet', '$log', '$q',
+      UserController
+    ]);
 
   /**
    * Main Controller for the Angular Material Starter App
@@ -14,6 +14,7 @@
    * @param avatarsService
    * @constructor
    */
+
   function UserController( userService, $mdSidenav, $mdBottomSheet, $log, $q) {
     var self = this;
 
@@ -26,11 +27,11 @@
     // Load all registered users
 
     userService
-          .loadAllUsers()
-          .then( function( users ) {
-            self.users    = [].concat(users);
-            self.selected = users[0];
-          });
+      .loadAllUsers()
+      .then( function( users ) {
+	self.users    = [].concat(users);
+	self.selected = users[0];
+      });
 
     // *********************************
     // Internal methods
@@ -44,7 +45,7 @@
       var pending = $mdBottomSheet.hide() || $q.when(true);
 
       pending.then(function(){
-        $mdSidenav('left').toggle();
+	$mdSidenav('left').toggle();
       });
     }
 
@@ -61,34 +62,38 @@
      * Show the bottom sheet
      */
     function share($event) {
-        var user = self.selected;
+      var user = self.selected;
 
-        $mdBottomSheet.show({
-          parent: angular.element(document.getElementById('content')),
-          templateUrl: '/src/users/view/contactSheet.html',
-          controller: [ '$mdBottomSheet', UserSheetController],
-          controllerAs: "vm",
-          bindToController : true,
-          targetEvent: $event
-        }).then(function(clickedItem) {
-          clickedItem && $log.debug( clickedItem.name + ' clicked!');
-        });
+      $mdBottomSheet.show({
+	parent: angular.element(document.getElementById('content')),
+	templateUrl: '/src/users/view/contactSheet.html',
+	controller: [ '$mdBottomSheet', UserSheetController],
+	controllerAs: "vm",
+	bindToController : true,
+	targetEvent: $event
+      }).then(function(clickedItem) {
+	clickedItem && $log.debug( clickedItem.name + ' clicked!');
+      });
 
-        /**
-         * Bottom Sheet controller for the Avatar Actions
-         */
-        function UserSheetController( $mdBottomSheet ) {
-          this.user = user;
-          this.items = [
-            { name: 'Phone'       , icon: 'phone'       , icon_url: 'assets/svg/phone.svg'},
-            { name: 'Twitter'     , icon: 'twitter'     , icon_url: 'assets/svg/twitter.svg'},
-            { name: 'Google+'     , icon: 'google_plus' , icon_url: 'assets/svg/google_plus.svg'},
-            { name: 'Hangout'     , icon: 'hangouts'    , icon_url: 'assets/svg/hangouts.svg'}
-          ];
-          this.performAction = function(action) {
-            $mdBottomSheet.hide(action);
-          };
-        }
+      /**
+       * Bottom Sheet controller for the Avatar Actions
+       */
+      function UserSheetController( $mdBottomSheet ) {
+	this.user = user;
+	this.items = [
+	  { name: 'Phone'       , icon: 'phone'       , icon_url: 'assets/svg/phone.svg'},
+	  { name: 'Twitter'     , icon: 'twitter'     , icon_url: 'assets/svg/twitter.svg'},
+	  { name: 'Google+'     , icon: 'google_plus' , icon_url: 'assets/svg/google_plus.svg'},
+	  { name: 'Hangout'     , icon: 'hangouts'    , icon_url: 'assets/svg/hangouts.svg'},
+	  { name: 'GitHub'      , icon: 'github'      , icon_url: 'assets/svg/github.svg'},
+	  { name: 'StackOverflow', icon:'stackoverflow', icon_url:'assets/svg/stackoverflow.svg'},
+	  { name: 'Skype'       , icon: 'skype'       , icon_url: 'assets/svg/skype.svg'}
+	];
+
+	this.performAction = function(action) {
+	  $mdBottomSheet.hide(action);
+	};
+      }
     }
 
   }
